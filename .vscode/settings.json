@@ -1,0 +1,13 @@
+{
+  "// Nota": "GesFact es un sistema heredado. La constitución prohíbe reformatear/limpiar el código de producción. Estos ajustes evitan que el editor lo formatee al guardar (comillas dobles, comas finales, reindentación de Prettier).",
+  "editor.formatOnSave": false,
+  "editor.formatOnPaste": false,
+  "editor.formatOnType": false,
+  "prettier.enable": false,
+  "[javascript]": {
+    "editor.formatOnSave": false
+  },
+  "[json]": {
+    "editor.formatOnSave": false
+  }
+}

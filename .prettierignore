@@ -1,0 +1,4 @@
+# La constitución de GesFact prohíbe reformatear/limpiar el código heredado.
+# Prettier NO debe tocar nada de este repositorio. Se ignora todo a propósito.
+# Ver .specify/memory/constitution.md y CLAUDE.md ("cero refactors").
+*
