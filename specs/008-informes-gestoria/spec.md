@@ -4,7 +4,7 @@
 
 **Created**: 2026-07-07
 
-**Status**: Draft
+**Status**: Aprobada
 
 **Input**: User description: "Spec de ingeniería inversa de los informes a la gestoría (resumen de IVA trimestral y export CSV). No es una feature nueva: es la especificación formal de lo que el sistema YA hace, para que sirva de contrato en la modernización."
 

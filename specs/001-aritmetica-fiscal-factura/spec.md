@@ -4,7 +4,7 @@
 
 **Created**: 2026-07-07
 
-**Status**: Draft
+**Status**: Aprobada
 
 **Input**: User description: "Spec de ingeniería inversa: documenta el comportamiento EXISTENTE de la aritmética fiscal de la factura en GesFact 2.4. No es una feature nueva: es la especificación formal de lo que el sistema YA hace, para que sirva de contrato en la modernización."
 

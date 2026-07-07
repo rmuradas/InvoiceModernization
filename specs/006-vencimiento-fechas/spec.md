@@ -4,7 +4,7 @@
 
 **Created**: 2026-07-07
 
-**Status**: Draft
+**Status**: Aprobada
 
 **Input**: User description: "Spec de ingeniería inversa que documenta el comportamiento EXISTENTE del cálculo de vencimiento y el manejo de fechas."
 

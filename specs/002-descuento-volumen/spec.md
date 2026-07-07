@@ -4,7 +4,7 @@
 
 **Created**: 2026-07-07
 
-**Status**: Draft
+**Status**: Aprobada
 
 **Input**: Descripción del usuario: "Spec de ingeniería inversa del comportamiento EXISTENTE del descuento comercial por volumen. No es una feature nueva: es la especificación formal de lo que el sistema YA hace, para que sirva de contrato en la modernización."
 

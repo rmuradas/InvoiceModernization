@@ -4,7 +4,7 @@
 
 **Created**: 2026-07-07
 
-**Status**: Draft
+**Status**: Aprobada
 
 **Input**: User description: "Spec de ingeniería inversa: documenta el comportamiento EXISTENTE del recargo de equivalencia. RN-06 tabla por tipo de IVA, RN-07 solo si cliente marcado, RN-08 tipos antiguos conservados, RN-09/A-16 tipo desconocido → recargo 0 en silencio y `===` rechaza `'21'`."
 

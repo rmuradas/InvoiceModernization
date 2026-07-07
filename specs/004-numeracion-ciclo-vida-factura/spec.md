@@ -4,7 +4,7 @@
 
 **Created**: 2026-07-07
 
-**Status**: Draft
+**Status**: Aprobada
 
 **Input**: User description: "Spec de ingeniería inversa: documenta el comportamiento EXISTENTE de la numeración correlativa y el ciclo de vida de la factura (emitir, cobrar, rectificar). No es una feature nueva: es la especificación formal de lo que el sistema YA hace, para que sirva de contrato en la modernización."
 

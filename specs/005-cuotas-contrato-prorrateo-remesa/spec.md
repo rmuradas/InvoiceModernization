@@ -4,7 +4,7 @@
 
 **Created**: 2026-07-07
 
-**Status**: Draft
+**Status**: Aprobada
 
 **Input**: User description: "Spec de ingeniería inversa que documenta el comportamiento EXISTENTE de las cuotas de contrato, su prorrateo y la remesa mensual."
 
