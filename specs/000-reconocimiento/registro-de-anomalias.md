@@ -705,6 +705,87 @@ versiones, declarar `engines`, archivar el volcado MySQL. No retroactivo.
 
 ---
 
+## A-21 — El redondeo "medio céntimo hacia arriba" NO es universal (bordes de coma flotante)
+
+**Descripción.** La doctrina documentada (RN-01, y su matiz H-1) afirma que `redondear2`
+redondea "el medio céntimo hacia arriba (0,005 → 0,01)" y especula que un negativo `-9,505`
+daría `-9,50` "hacia +∞". **Ejecutando el código, ambas afirmaciones son falsas en casos
+concretos**, porque `Math.round(x * 100)` hereda la representación binaria de `x * 100`:
+
+- `redondear2(0.005) = 0.01` (sube), **pero** `redondear2(1.005) = 1` (NO sube: `1.005*100`
+  es `100.4999…` en binario).
+- `redondear2(-9.505) = -9.51` (no `-9.50`: `-9.505*100` es `-950.5` y `Math.round` va a `-950`… en realidad da `-951` por el binario). El signo negativo **no** redondea "hacia +∞" como decía H-1.
+- `formatearImporte` usa `toFixed(2)`, un redondeo **distinto** de `Math.round`, así que
+  `formatearImporte(-0.005) = "-0,01"`.
+
+**Evidencia.**
+- **CÓDIGO:** [lib/util.js:5-7](../../lib/util.js#L5-L7) (`Math.round(x*100)/100`) y
+  [lib/util.js:51-58](../../lib/util.js#L51-L58) (`toFixed`).
+- **DATOS (nuevos, ejecutados en esta fase):** transcritos en
+  [test/util.redondeo.test.js](../../test/util.redondeo.test.js) y
+  [test/anomalias.test.js](../../test/anomalias.test.js) ("A-21").
+
+**Clasificación final: ACCIDENTAL (latente).** Efecto inevitable de `Math.round`/`toFixed`
+sobre coma flotante; sin señal de que se buscara ese borde. Hoy no ha mordido en importes
+reales (las cantidades reales no caen en esos valores exactos), pero **contradice la
+doctrina escrita** en `reglas-de-negocio.md`. Congelado tal cual (no se corrige).
+
+**Dependientes.** La gestoría, si algún día una factura cae justo en un borde de estos
+(descuadre de 1 céntimo, el tipo de error de 2019). El documento RN-01/H-1 debe corregir su
+enunciado, porque describe mal lo que el código hace.
+
+**Tratamiento acordado.** **Documentar sin especificar.** Congelado por
+[test/util.redondeo.test.js](../../test/util.redondeo.test.js). No corregir en esta fase.
+
+**Decisión de negocio pendiente.** ¿Debe el redondeo ser "medio hacia arriba" *de verdad*
+(p. ej. con `Number.EPSILON` o aritmética de céntimos enteros), o se acepta el
+comportamiento actual? **Responsable:** Puri (gestoría) / Julián.
+
+---
+
+## A-22 — Las facturas de ejemplo de `db.js` NO son reproducibles por el motor actual
+
+**Descripción.** Al pasar las **líneas exactas** de facturas de ejemplo por
+`calcularFactura`, el motor de hoy produce importes **distintos** de las cabeceras grabadas
+a mano en `db.js`. Dos casos confirmados ejecutando:
+
+1. **FA-2026-000103.** La doctrina (RN-04) la usa como prueba del borde "base 1.000 justa NO
+   descuenta". Pero sus cuatro líneas ([db.js:140-143](../../db.js#L140-L143)) suman
+   **1.000,02 €** de base bruta, no 1.000 (`0,92 × 6,00 = 5,52`, no el `5,50` grabado a
+   mano). El motor, por tanto, **aplica descuento del 2 %** y da base **980,01** / total
+   **1.185,82**, nada que ver con los `1.000 / 0 % / 1.210,00` de la cabecera
+   ([db.js:139](../../db.js#L139)). **El ejemplo canónico del borde estricto no tiene 1.000
+   bruto.**
+2. **FA-2026-000102.** La línea de Portes se grabó con base `1,90`
+   ([db.js:136](../../db.js#L136)) cuando `0,32 × 6,00 = 1,92`. El motor da base **115,62** /
+   total **145,91**, no los `115,60 / 145,89` grabados ([db.js:132](../../db.js#L132)).
+
+**Evidencia.**
+- **CÓDIGO/DATOS:** cabeceras y líneas en [db.js:132-143](../../db.js#L132-L143); salida del
+  motor transcrita en [test/anomalias.test.js](../../test/anomalias.test.js) ("A-22"),
+  [test/calculo.factura.test.js](../../test/calculo.factura.test.js) y el golden master
+  (caso `03-fa103-no-reproducible`).
+
+**Clasificación final: BUG A SECAS (en los datos de ejemplo, no en el motor).** Los datos
+iniciales se cargaron con importes ajustados a mano (o con cantidades que no cuadran con las
+bases grabadas), no por el camino de producción (`cargarDatosIniciales` inserta valores
+literales, [db.js:126-171](../../db.js#L126-L171)). No hay dependiente vivo: son datos de
+arranque. El motor es coherente consigo mismo; **el ejemplo es el que miente**.
+
+**Dependientes.** El documento `reglas-de-negocio.md` (que cita esas cabeceras como prueba
+de RN-03/RN-04); ningún flujo de producción. **Aviso:** invalida parcialmente los "ejemplos
+reales" de RN-02/03/04 que se apoyaban en las cabeceras de db.js.
+
+**Tratamiento acordado.** **Documentar sin especificar.** Congelado el comportamiento del
+**motor** (que es lo correcto) por el golden master y los tests de factura. Los datos de
+ejemplo se corregirán/anonimizarán en modernización (coordina con A-19), sin tocar el motor.
+
+**Decisión de negocio pendiente.** Ninguna sobre el motor. Al rehacer los datos de ejemplo
+(A-19), regenerarlos **pasándolos por `calcularFactura`** para que sean reproducibles.
+**Responsable:** Julián.
+
+---
+
 # Tabla resumen
 
 | ID | Anomalía (breve) | Clasificación | Tratamiento | Decisión pendiente |
@@ -729,6 +810,8 @@ versiones, declarar `engines`, archivar el volcado MySQL. No retroactivo.
 | A-18 | Secretos en claro en `config.js` versionado | BUG HISTÓRICO C/DEP. | Corregir sin renombrar config | Sí — Julián/Puri |
 | A-19 | BD de producción con datos personales en Git | BUG HISTÓRICO C/DEP. | Corregir (RGPD) | Sí — Paco/RGPD |
 | A-20 | Deuda infra (`node_modules`, Node 8, MySQL fantasma) | ACCIDENTAL | Limpiar | Sí — Julián |
+| A-21 | Redondeo "medio arriba" NO universal (bordes coma flotante); doc RN-01/H-1 errónea | ACCIDENTAL (latente) | Documentar; congelado en tests | Sí — Puri/Julián |
+| A-22 | Facturas de ejemplo de `db.js` NO reproducibles por el motor (FA-103, FA-102) | BUG A SECAS (en datos) | Documentar; regenerar datos en modernización | No (técnica) — Julián |
 
 **Reglas protegidas (anomalías positivas, INTENCIONAL) que NO aparecen como fila de bug** pero se
 listan aquí para que consten como comportamiento sagrado a **especificar tal cual** en las specs

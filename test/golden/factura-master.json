@@ -1,0 +1,757 @@
+{
+  "01-sin-recargo-basica": {
+    "descripcion": "FA-2026-000101: cliente sin recargo, mezcla de IVA 21/10, sin descuento (RN-02/03)",
+    "entrada": {
+      "cliente": {
+        "recargo_equivalencia": 0
+      },
+      "lineas": [
+        {
+          "cantidad": 1,
+          "descripcion": "Alquiler máquina café (enero)",
+          "precio": 90,
+          "tipoIva": 21
+        },
+        {
+          "cantidad": 2,
+          "descripcion": "Café en grano 1kg",
+          "precio": 11.95,
+          "tipoIva": 10
+        },
+        {
+          "cantidad": 1,
+          "descripcion": "Azúcar 10kg",
+          "precio": 9.8,
+          "tipoIva": 10
+        },
+        {
+          "cantidad": 0.44,
+          "descripcion": "Vaso caña (caja)",
+          "precio": 21.6,
+          "tipoIva": 21
+        }
+      ]
+    },
+    "salida": {
+      "base": 133.2,
+      "descuentoPct": 0,
+      "iva": 24.27,
+      "lineas": [
+        {
+          "base": 90,
+          "cantidad": 1,
+          "cuotaIva": 18.9,
+          "cuotaRecargo": 0,
+          "descripcion": "Alquiler máquina café (enero)",
+          "precio": 90,
+          "tipoIva": 21
+        },
+        {
+          "base": 23.9,
+          "cantidad": 2,
+          "cuotaIva": 2.39,
+          "cuotaRecargo": 0,
+          "descripcion": "Café en grano 1kg",
+          "precio": 11.95,
+          "tipoIva": 10
+        },
+        {
+          "base": 9.8,
+          "cantidad": 1,
+          "cuotaIva": 0.98,
+          "cuotaRecargo": 0,
+          "descripcion": "Azúcar 10kg",
+          "precio": 9.8,
+          "tipoIva": 10
+        },
+        {
+          "base": 9.5,
+          "cantidad": 0.44,
+          "cuotaIva": 2,
+          "cuotaRecargo": 0,
+          "descripcion": "Vaso caña (caja)",
+          "precio": 21.6,
+          "tipoIva": 21
+        }
+      ],
+      "recargo": 0,
+      "total": 157.47
+    }
+  },
+  "02-con-recargo": {
+    "descripcion": "FA-2026-000102: cliente CON recargo de equivalencia al 21% (RN-06/07)",
+    "entrada": {
+      "cliente": {
+        "recargo_equivalencia": 1
+      },
+      "lineas": [
+        {
+          "cantidad": 4,
+          "descripcion": "Desengrasante 10L",
+          "precio": 18.5,
+          "tipoIva": 21
+        },
+        {
+          "cantidad": 1,
+          "descripcion": "Plato llano",
+          "precio": 28.9,
+          "tipoIva": 21
+        },
+        {
+          "cantidad": 0.5,
+          "descripcion": "Vaso caña",
+          "precio": 21.6,
+          "tipoIva": 21
+        },
+        {
+          "cantidad": 0.32,
+          "descripcion": "Portes",
+          "precio": 6,
+          "tipoIva": 21
+        }
+      ]
+    },
+    "salida": {
+      "base": 115.62,
+      "descuentoPct": 0,
+      "iva": 24.28,
+      "lineas": [
+        {
+          "base": 74,
+          "cantidad": 4,
+          "cuotaIva": 15.54,
+          "cuotaRecargo": 3.85,
+          "descripcion": "Desengrasante 10L",
+          "precio": 18.5,
+          "tipoIva": 21
+        },
+        {
+          "base": 28.9,
+          "cantidad": 1,
+          "cuotaIva": 6.07,
+          "cuotaRecargo": 1.5,
+          "descripcion": "Plato llano",
+          "precio": 28.9,
+          "tipoIva": 21
+        },
+        {
+          "base": 10.8,
+          "cantidad": 0.5,
+          "cuotaIva": 2.27,
+          "cuotaRecargo": 0.56,
+          "descripcion": "Vaso caña",
+          "precio": 21.6,
+          "tipoIva": 21
+        },
+        {
+          "base": 1.92,
+          "cantidad": 0.32,
+          "cuotaIva": 0.4,
+          "cuotaRecargo": 0.1,
+          "descripcion": "Portes",
+          "precio": 6,
+          "tipoIva": 21
+        }
+      ],
+      "recargo": 6.01,
+      "total": 145.91
+    }
+  },
+  "03-fa103-no-reproducible": {
+    "descripcion": "FA-2026-000103 (db.js:140-143): sus lineas suman 1.000,02 bruto, NO 1.000; el motor descuenta 2% (A-22)",
+    "entrada": {
+      "cliente": {
+        "recargo_equivalencia": 0
+      },
+      "lineas": [
+        {
+          "cantidad": 20,
+          "descripcion": "Plato llano",
+          "precio": 28.9,
+          "tipoIva": 21
+        },
+        {
+          "cantidad": 15,
+          "descripcion": "Vaso caña",
+          "precio": 21.6,
+          "tipoIva": 21
+        },
+        {
+          "cantidad": 5,
+          "descripcion": "Desengrasante",
+          "precio": 18.5,
+          "tipoIva": 21
+        },
+        {
+          "cantidad": 0.92,
+          "descripcion": "Portes",
+          "precio": 6,
+          "tipoIva": 21
+        }
+      ]
+    },
+    "salida": {
+      "base": 980.01,
+      "descuentoPct": 2,
+      "iva": 205.81,
+      "lineas": [
+        {
+          "base": 566.4,
+          "cantidad": 20,
+          "cuotaIva": 118.94,
+          "cuotaRecargo": 0,
+          "descripcion": "Plato llano",
+          "precio": 28.32,
+          "tipoIva": 21
+        },
+        {
+          "base": 317.55,
+          "cantidad": 15,
+          "cuotaIva": 66.69,
+          "cuotaRecargo": 0,
+          "descripcion": "Vaso caña",
+          "precio": 21.17,
+          "tipoIva": 21
+        },
+        {
+          "base": 90.65,
+          "cantidad": 5,
+          "cuotaIva": 19.04,
+          "cuotaRecargo": 0,
+          "descripcion": "Desengrasante",
+          "precio": 18.13,
+          "tipoIva": 21
+        },
+        {
+          "base": 5.41,
+          "cantidad": 0.92,
+          "cuotaIva": 1.14,
+          "cuotaRecargo": 0,
+          "descripcion": "Portes",
+          "precio": 5.88,
+          "tipoIva": 21
+        }
+      ],
+      "recargo": 0,
+      "total": 1185.82
+    }
+  },
+  "03b-base-1000-exacta": {
+    "descripcion": "Base bruta EXACTAMENTE 1.000,00 € (500+300+200) -> NO descuenta (RN-04 borde estricto)",
+    "entrada": {
+      "cliente": {
+        "recargo_equivalencia": 0
+      },
+      "lineas": [
+        {
+          "cantidad": 1,
+          "descripcion": "Bloque A",
+          "precio": 500,
+          "tipoIva": 21
+        },
+        {
+          "cantidad": 1,
+          "descripcion": "Bloque B",
+          "precio": 300,
+          "tipoIva": 21
+        },
+        {
+          "cantidad": 1,
+          "descripcion": "Bloque C",
+          "precio": 200,
+          "tipoIva": 21
+        }
+      ]
+    },
+    "salida": {
+      "base": 1000,
+      "descuentoPct": 0,
+      "iva": 210,
+      "lineas": [
+        {
+          "base": 500,
+          "cantidad": 1,
+          "cuotaIva": 105,
+          "cuotaRecargo": 0,
+          "descripcion": "Bloque A",
+          "precio": 500,
+          "tipoIva": 21
+        },
+        {
+          "base": 300,
+          "cantidad": 1,
+          "cuotaIva": 63,
+          "cuotaRecargo": 0,
+          "descripcion": "Bloque B",
+          "precio": 300,
+          "tipoIva": 21
+        },
+        {
+          "base": 200,
+          "cantidad": 1,
+          "cuotaIva": 42,
+          "cuotaRecargo": 0,
+          "descripcion": "Bloque C",
+          "precio": 200,
+          "tipoIva": 21
+        }
+      ],
+      "recargo": 0,
+      "total": 1210
+    }
+  },
+  "04-iva-reducido-4": {
+    "descripcion": "FA-2026-000104: IVA reducido al 4% con recargo 0,5% (RN-06)",
+    "entrada": {
+      "cliente": {
+        "recargo_equivalencia": 1
+      },
+      "lineas": [
+        {
+          "cantidad": 8,
+          "descripcion": "Harina panificable 25kg",
+          "precio": 14.2,
+          "tipoIva": 4
+        },
+        {
+          "cantidad": 1.41,
+          "descripcion": "Aceite oliva 5L",
+          "precio": 27.45,
+          "tipoIva": 4
+        }
+      ]
+    },
+    "salida": {
+      "base": 152.3,
+      "descuentoPct": 0,
+      "iva": 6.09,
+      "lineas": [
+        {
+          "base": 113.6,
+          "cantidad": 8,
+          "cuotaIva": 4.54,
+          "cuotaRecargo": 0.57,
+          "descripcion": "Harina panificable 25kg",
+          "precio": 14.2,
+          "tipoIva": 4
+        },
+        {
+          "base": 38.7,
+          "cantidad": 1.41,
+          "cuotaIva": 1.55,
+          "cuotaRecargo": 0.19,
+          "descripcion": "Aceite oliva 5L",
+          "precio": 27.45,
+          "tipoIva": 4
+        }
+      ],
+      "recargo": 0.76,
+      "total": 159.15
+    }
+  },
+  "05-descuento-2pct": {
+    "descripcion": "FA-2026-000105: base > 1.000 -> descuento 2% linea a linea, IVA mezclado (RN-04/05)",
+    "entrada": {
+      "cliente": {
+        "recargo_equivalencia": 0
+      },
+      "lineas": [
+        {
+          "cantidad": 1,
+          "descripcion": "Mantenimiento cámaras",
+          "precio": 145,
+          "tipoIva": 21
+        },
+        {
+          "cantidad": 24,
+          "descripcion": "Aceite oliva 5L",
+          "precio": 27.45,
+          "tipoIva": 4
+        },
+        {
+          "cantidad": 30,
+          "descripcion": "Café en grano 1kg",
+          "precio": 11.95,
+          "tipoIva": 10
+        },
+        {
+          "cantidad": 40,
+          "descripcion": "Plato llano",
+          "precio": 28.9,
+          "tipoIva": 21
+        },
+        {
+          "cantidad": 2.87,
+          "descripcion": "Portes",
+          "precio": 6,
+          "tipoIva": 21
+        }
+      ]
+    },
+    "salida": {
+      "base": 2288.68,
+      "descuentoPct": 2,
+      "iva": 332.22,
+      "lineas": [
+        {
+          "base": 142.1,
+          "cantidad": 1,
+          "cuotaIva": 29.84,
+          "cuotaRecargo": 0,
+          "descripcion": "Mantenimiento cámaras",
+          "precio": 142.1,
+          "tipoIva": 21
+        },
+        {
+          "base": 645.6,
+          "cantidad": 24,
+          "cuotaIva": 25.82,
+          "cuotaRecargo": 0,
+          "descripcion": "Aceite oliva 5L",
+          "precio": 26.9,
+          "tipoIva": 4
+        },
+        {
+          "base": 351.3,
+          "cantidad": 30,
+          "cuotaIva": 35.13,
+          "cuotaRecargo": 0,
+          "descripcion": "Café en grano 1kg",
+          "precio": 11.71,
+          "tipoIva": 10
+        },
+        {
+          "base": 1132.8,
+          "cantidad": 40,
+          "cuotaIva": 237.89,
+          "cuotaRecargo": 0,
+          "descripcion": "Plato llano",
+          "precio": 28.32,
+          "tipoIva": 21
+        },
+        {
+          "base": 16.88,
+          "cantidad": 2.87,
+          "cuotaIva": 3.54,
+          "cuotaRecargo": 0,
+          "descripcion": "Portes",
+          "precio": 5.88,
+          "tipoIva": 21
+        }
+      ],
+      "recargo": 0,
+      "total": 2620.9
+    }
+  },
+  "06-descuento-5pct": {
+    "descripcion": "Base > 5.000 -> descuento 5% (RN-04, tramo superior)",
+    "entrada": {
+      "cliente": {
+        "recargo_equivalencia": 0
+      },
+      "lineas": [
+        {
+          "cantidad": 100,
+          "descripcion": "Lote grande A",
+          "precio": 45,
+          "tipoIva": 21
+        },
+        {
+          "cantidad": 50,
+          "descripcion": "Lote grande B",
+          "precio": 30,
+          "tipoIva": 10
+        }
+      ]
+    },
+    "salida": {
+      "base": 5700,
+      "descuentoPct": 5,
+      "iva": 1040.25,
+      "lineas": [
+        {
+          "base": 4275,
+          "cantidad": 100,
+          "cuotaIva": 897.75,
+          "cuotaRecargo": 0,
+          "descripcion": "Lote grande A",
+          "precio": 42.75,
+          "tipoIva": 21
+        },
+        {
+          "base": 1425,
+          "cantidad": 50,
+          "cuotaIva": 142.5,
+          "cuotaRecargo": 0,
+          "descripcion": "Lote grande B",
+          "precio": 28.5,
+          "tipoIva": 10
+        }
+      ],
+      "recargo": 0,
+      "total": 6740.25
+    }
+  },
+  "07-recargo-multitipo": {
+    "descripcion": "Recargo con los tres tipos vigentes a la vez: 21/10/4 (RN-06 tabla completa)",
+    "entrada": {
+      "cliente": {
+        "recargo_equivalencia": 1
+      },
+      "lineas": [
+        {
+          "cantidad": 3,
+          "descripcion": "General 21%",
+          "precio": 33.33,
+          "tipoIva": 21
+        },
+        {
+          "cantidad": 7,
+          "descripcion": "Reducido 10%",
+          "precio": 12.1,
+          "tipoIva": 10
+        },
+        {
+          "cantidad": 2,
+          "descripcion": "Superreducido 4%",
+          "precio": 8.75,
+          "tipoIva": 4
+        }
+      ]
+    },
+    "salida": {
+      "base": 202.19,
+      "descuentoPct": 0,
+      "iva": 30.17,
+      "lineas": [
+        {
+          "base": 99.99,
+          "cantidad": 3,
+          "cuotaIva": 21,
+          "cuotaRecargo": 5.2,
+          "descripcion": "General 21%",
+          "precio": 33.33,
+          "tipoIva": 21
+        },
+        {
+          "base": 84.7,
+          "cantidad": 7,
+          "cuotaIva": 8.47,
+          "cuotaRecargo": 1.19,
+          "descripcion": "Reducido 10%",
+          "precio": 12.1,
+          "tipoIva": 10
+        },
+        {
+          "base": 17.5,
+          "cantidad": 2,
+          "cuotaIva": 0.7,
+          "cuotaRecargo": 0.09,
+          "descripcion": "Superreducido 4%",
+          "precio": 8.75,
+          "tipoIva": 4
+        }
+      ],
+      "recargo": 6.48,
+      "total": 238.84
+    }
+  },
+  "08-iva-antiguo-16": {
+    "descripcion": "Tipo de IVA antiguo 16% con recargo 4% conservado (RN-08, codigo latente)",
+    "entrada": {
+      "cliente": {
+        "recargo_equivalencia": 1
+      },
+      "lineas": [
+        {
+          "cantidad": 1,
+          "descripcion": "Ejercicio viejo al 16%",
+          "precio": 100,
+          "tipoIva": 16
+        }
+      ]
+    },
+    "salida": {
+      "base": 100,
+      "descuentoPct": 0,
+      "iva": 16,
+      "lineas": [
+        {
+          "base": 100,
+          "cantidad": 1,
+          "cuotaIva": 16,
+          "cuotaRecargo": 4,
+          "descripcion": "Ejercicio viejo al 16%",
+          "precio": 100,
+          "tipoIva": 16
+        }
+      ],
+      "recargo": 4,
+      "total": 120
+    }
+  },
+  "09-iva-desconocido": {
+    "descripcion": "Tipo de IVA 5% fuera de tabla -> IVA se aplica, recargo 0 en silencio (RN-09, A-16)",
+    "entrada": {
+      "cliente": {
+        "recargo_equivalencia": 1
+      },
+      "lineas": [
+        {
+          "cantidad": 1,
+          "descripcion": "Tipo raro 5%",
+          "precio": 100,
+          "tipoIva": 5
+        }
+      ]
+    },
+    "salida": {
+      "base": 100,
+      "descuentoPct": 0,
+      "iva": 5,
+      "lineas": [
+        {
+          "base": 100,
+          "cantidad": 1,
+          "cuotaIva": 5,
+          "cuotaRecargo": 0,
+          "descripcion": "Tipo raro 5%",
+          "precio": 100,
+          "tipoIva": 5
+        }
+      ],
+      "recargo": 0,
+      "total": 105
+    }
+  },
+  "10-redondeo-fino": {
+    "descripcion": "Cantidades fraccionarias que fuerzan bordes de redondeo linea a linea (RN-01/02, A-21)",
+    "entrada": {
+      "cliente": {
+        "recargo_equivalencia": 1
+      },
+      "lineas": [
+        {
+          "cantidad": 0.333,
+          "descripcion": "Fraccion 1",
+          "precio": 3.015,
+          "tipoIva": 21
+        },
+        {
+          "cantidad": 7,
+          "descripcion": "Fraccion 2",
+          "precio": 0.165,
+          "tipoIva": 10
+        },
+        {
+          "cantidad": 1.005,
+          "descripcion": "Fraccion 3",
+          "precio": 100,
+          "tipoIva": 4
+        }
+      ]
+    },
+    "salida": {
+      "base": 102.66,
+      "descuentoPct": 0,
+      "iva": 4.35,
+      "lineas": [
+        {
+          "base": 1,
+          "cantidad": 0.333,
+          "cuotaIva": 0.21,
+          "cuotaRecargo": 0.05,
+          "descripcion": "Fraccion 1",
+          "precio": 3.015,
+          "tipoIva": 21
+        },
+        {
+          "base": 1.16,
+          "cantidad": 7,
+          "cuotaIva": 0.12,
+          "cuotaRecargo": 0.02,
+          "descripcion": "Fraccion 2",
+          "precio": 0.165,
+          "tipoIva": 10
+        },
+        {
+          "base": 100.5,
+          "cantidad": 1.005,
+          "cuotaIva": 4.02,
+          "cuotaRecargo": 0.5,
+          "descripcion": "Fraccion 3",
+          "precio": 100,
+          "tipoIva": 4
+        }
+      ],
+      "recargo": 0.57,
+      "total": 107.58
+    }
+  },
+  "11-una-linea-cero": {
+    "descripcion": "Linea con cantidad 0 mezclada con linea normal (borde: cero)",
+    "entrada": {
+      "cliente": {
+        "recargo_equivalencia": 0
+      },
+      "lineas": [
+        {
+          "cantidad": 0,
+          "descripcion": "Regalo (0 uds)",
+          "precio": 50,
+          "tipoIva": 21
+        },
+        {
+          "cantidad": 2,
+          "descripcion": "Normal",
+          "precio": 25,
+          "tipoIva": 21
+        }
+      ]
+    },
+    "salida": {
+      "base": 50,
+      "descuentoPct": 0,
+      "iva": 10.5,
+      "lineas": [
+        {
+          "base": 0,
+          "cantidad": 0,
+          "cuotaIva": 0,
+          "cuotaRecargo": 0,
+          "descripcion": "Regalo (0 uds)",
+          "precio": 50,
+          "tipoIva": 21
+        },
+        {
+          "base": 50,
+          "cantidad": 2,
+          "cuotaIva": 10.5,
+          "cuotaRecargo": 0,
+          "descripcion": "Normal",
+          "precio": 25,
+          "tipoIva": 21
+        }
+      ],
+      "recargo": 0,
+      "total": 60.5
+    }
+  },
+  "12-vacia": {
+    "descripcion": "Factura sin lineas (borde: vacio)",
+    "entrada": {
+      "cliente": {
+        "recargo_equivalencia": 1
+      },
+      "lineas": []
+    },
+    "salida": {
+      "base": 0,
+      "descuentoPct": 0,
+      "iva": 0,
+      "lineas": [],
+      "recargo": 0,
+      "total": 0
+    }
+  }
+}

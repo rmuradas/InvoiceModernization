@@ -4,7 +4,9 @@
   "description": "Programa de facturacion Suministros Hidalgo",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "node --test \"test/**/*.test.js\"",
+    "test:golden:regenerar": "node test/golden/generar.js"
   },
   "author": "Julian",
   "license": "UNLICENSED",
