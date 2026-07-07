@@ -122,6 +122,9 @@ Personas que aparecen en los comentarios:
 - **Implicados:** Roberto (autor), Marga (quien lo ejecuta).
 - **Evidencia:** [scripts/remesa_mensual.js:6-7](../../scripts/remesa_mensual.js#L6-L7) («Lo añadio Roberto (becario) en verano de 2021...»); [server.js:4](../../server.js#L4); recordatorio operativo en [views/index.ejs:9](../../views/index.ejs#L9) («la remesa... se lanza el día 1 desde el ordenador de Marga»).
 - **Pregunta al negocio:** ⚠️ Discrepancia de cálculo detectada: el prorrateo del script usa **los días reales del mes** (`scripts/remesa_mensual.js:47-51`), mientras que `calculo.calcularProrrateo` usa **30 días fijos** (`services/calculo.js:95-101`). Son dos cálculos distintos para "lo mismo". ¿Cuál es el correcto para la gestoría? ¿Se ha comparado alguna vez el resultado de ambos en una baja a mitad de mes?
+- **RESUELTA (acta 2026-07-07, D-01):** el oficial es el del script (**días reales del mes**, con el día
+  31 cobrado). La fórmula de 30 días fijos de `calcularProrrateo` queda desalineada y a unificar en
+  modernización. Ver [entrada de julio 2026](#julio-2026--entrevista-de-negocio-doctrina-de-prorrateo-y-de-numeración-revisión-de-reglas) y A-01 del registro de anomalías.
 
 ### 2021 — Autorrelleno de líneas de factura
 
@@ -147,6 +150,30 @@ Personas que aparecen en los comentarios:
 - **Implicados:** (No firmado; presumiblemente Julián.) **SUPOSICIÓN** sobre la autoría.
 - **Evidencia:** [services/email.js:8](../../services/email.js#L8) («desinstalado en 2023, daba un aviso de seguridad»).
 - **Pregunta al negocio:** ¿Quién realizó esta desinstalación y consta el aviso de seguridad concreto? Relevante si se decide reactivar el correo.
+
+### Julio 2026 — Entrevista de negocio: doctrina de prorrateo y de numeración (revisión de reglas)
+
+- **Qué se decidió (testimonio firme de reunión):** en la entrevista del 2026-07-07 el negocio
+  **revocó dos comportamientos** que hasta entonces se documentaban como "reglas de la casa":
+  1. **Prorrateo (D-01, Paco con Puri):** se abandona la doctrina histórica de Paco de "el mes son
+     siempre 30 días / el día 31 no se cobra". El prorrateo oficial pasa a ser **días reales del mes**
+     (la fórmula que ya usaba la remesa) y **el día 31 sí se cobra**. Esto **contradice** el comentario
+     fosilizado en `calculo.js:90-93` ("así lo hacía Paco a mano en el Access y así lo espera la
+     gestoría"): la doctrina del Access queda superada por decisión viva del propio Paco.
+  2. **Numeración (D-02, Puri con asesoría fiscal):** el año del contador debe tomarse de la **fecha de
+     la factura**, no del año de grabación (`new Date().getFullYear()`). Una remesa de diciembre lanzada
+     en enero debe numerar en el año viejo.
+- **Implicados:** Paco (doctrina comercial), Puri (gestoría), asesoría fiscal.
+- **Naturaleza:** son las **únicas dos respuestas firmes** del acta; el resto de decisiones (D-03..D-18)
+  son **simuladas por el consultor** y están pendientes de ratificación (ver acta). Nada se aplica en
+  esta fase (documentar y proteger); las correcciones son **no retroactivas** y para modernización.
+- **Evidencia:** [entrevista-negocio.md, D-01 y D-02](./entrevista-negocio.md); código afectado
+  [services/calculo.js:90-93,95-102](../../services/calculo.js#L90-L102),
+  [scripts/remesa_mensual.js:47-51](../../scripts/remesa_mensual.js#L47-L51),
+  [lib/numeracion.js:15](../../lib/numeracion.js#L15).
+- **Pregunta al negocio:** ninguna sobre estas dos (resueltas). Queda **arqueología de datos** para
+  dimensionar el impacto histórico (facturas de baja con la fórmula vieja; facturas con año de número ≠
+  año de fecha) — ver acta §6.2.
 
 ---
 
