@@ -6,18 +6,18 @@
 // REGLA DE ORO: el valor esperado es el que produce Math.round(x*100)/100.
 // Si un test falla, se corrige el TEST, jamas el codigo.
 
-var test = require('node:test');
-var assert = require('node:assert');
-var util = require('../lib/util');
+var test = require("node:test");
+var assert = require("node:assert");
+var util = require("../lib/util");
 
-test('redondear2: ejemplos reales de factura (RN-01)', function () {
+test("redondear2: ejemplos reales de factura (RN-01)", function () {
   // FA-2026-000101, linea del vaso: 0,44 x 21,60 = 9,504 -> 9,50 (db.js:130)
   assert.strictEqual(util.redondear2(9.504), 9.5);
   // IVA de esa base: 9,50 x 21/100 = 1,995 -> 2,00 (db.js:130)
   assert.strictEqual(util.redondear2(1.995), 2);
 });
 
-test('redondear2: cero, negativos y enteros', function () {
+test("redondear2: cero, negativos y enteros", function () {
   assert.strictEqual(util.redondear2(0), 0);
   // CONGELA: -0 se preserva como -0 (Math.round(-0*100)/100 = -0). Ver A-21.
   assert.ok(Object.is(util.redondear2(-0), -0));
@@ -42,10 +42,10 @@ test('redondear2: el "medio hacia arriba" NO es universal (coma flotante)', func
   // OJO: este es el valor del MOTOR; el dato historico db.js:143 grabo 1,15 a mano.
   assert.strictEqual(util.redondear2(1.155), 1.16);
   // 658,80 x 4/100 = 26,3519... -> 26,35
-  assert.strictEqual(util.redondear2(658.80 * 4 / 100), 26.35);
+  assert.strictEqual(util.redondear2((658.8 * 4) / 100), 26.35);
 });
 
-test('redondear2: negativos redondean hacia +infinito (Math.round)', function () {
+test("redondear2: negativos redondean hacia +infinito (Math.round)", function () {
   // La doc (H-1) ESPECULA que -9,505 daria -9,50 "hacia +inf". FALSO:
   // -9.505*100 = -950.4999... -> Math.round -> -950 -> -9,50 seria lo esperado,
   // pero el motor produce -9,51. Se congela lo REAL (ver A-21).
