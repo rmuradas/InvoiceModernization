@@ -19,14 +19,17 @@ testigos, clasificación final, dependientes, tratamiento acordado y decisión d
 > **Aviso de método sobre las dos fuentes de cierre citadas en el encargo.** El encargo nombra
 > `entrevista-negocio.md` (respuestas del negocio) y una *arqueología de datos* (consultas resueltas
 > sobre `datos/gesfact.db`) como las fuentes que "permiten cerrar clasificaciones".
-> **Estado a 2026-07-07:** ya existe el [acta de entrevista](./entrevista-negocio.md). De ella **solo
-> las respuestas a las preguntas 1 y 2 son testimonio de negocio vivo firme** (D-01 → A-01, D-02 →
-> A-14): esas dos anomalías se **cierran**. El resto de respuestas del acta (D-03..D-18) son
-> **simuladas por el consultor** y marcadas **[SIMULADA — ratificar]**: no son testimonio vivo válido y
-> **no cierran** su anomalía (quedan *pendiente de ratificación*). La **arqueología de datos sigue sin
-> realizarse**; hace falta para *dimensionar* lo ya decidido (A-01, A-14), no para decidirlo. Por eso la
-> lista PENDIENTE (al final) **no queda vacía**: conserva A-15 y A-16 (a ratificar) y es la agenda de la
-> próxima conversación con el negocio.
+> **Estado a 2026-07-07 (actualizado tras la ratificación escrita):** existe el
+> [acta de entrevista](./entrevista-negocio.md). Sus preguntas 1 y 2 (D-01 → A-01, D-02 → A-14) fueron
+> testimonio de negocio vivo firme desde la reunión. Las respuestas simuladas por el consultor de las
+> **anomalías que estaban PENDIENTE por clasificación (A-15 y A-16)** han sido **ratificadas por escrito**
+> por sus responsables el 2026-07-07 (D-03 por Marga/Paco; D-04 por Puri/Paco): con ese testigo de negocio
+> vivo, **A-15 y A-16 quedan CERRADAS** como BUG A SECAS. Por tanto la **lista PENDIENTE de clasificaciones
+> (al final) queda VACÍA** y el reconocimiento está listo para pasar a specs formales. El resto de
+> respuestas del acta (D-05..D-18) siguen **[SIMULADA — ratificar]**: no bloquean ninguna *clasificación*
+> (todas cerradas), pero condicionan el *tratamiento definitivo* "especificar tal cual vs. corregir" de sus
+> anomalías; se ratificarán en la ronda de modernización. La **arqueología de datos sigue sin realizarse**;
+> hace falta solo para *dimensionar* lo ya decidido (A-01, A-14, A-05), no para decidirlo.
 
 ## Convención de testigos (para la regla innegociable de clasificación)
 
@@ -531,26 +534,31 @@ sentido.
 - **CÓDIGO:** `if (dias < 0) dias = 0;` [services/calculo.js:100](../../services/calculo.js#L100); solo usa el día en [calculo.js:96-97](../../services/calculo.js#L96-L97).
 - **DATOS:** no evidenciado un caso que lo dispare.
 
-**Clasificación final: PENDIENTE (con respuesta SIMULADA, no ratificada).** Sin comentario: la guarda a 0
-podría ser defensiva deliberada o un parche. Solo CÓDIGO a favor; el "cobrar 0 en silencio vs. avisar" es
-decisión de negocio. **Sigue PENDIENTE:** en la reunión de 2026-07-07 el consultor respondió *en nombre
-del negocio* (D-03) pero **no es testimonio de negocio vivo válido** hasta ratificación escrita de Marga/Paco.
+**Clasificación final (revisada 2026-07-07): CERRADA — el comportamiento actual (cobrar 0 € en silencio; asumir mismo mes) es un BUG A SECAS; el negocio ratifica que debe avisarse y bloquear, y no cruzar dos meses.**
+Hasta la ratificación solo había CÓDIGO a favor y la decisión "cobrar 0 en silencio vs. avisar" era de
+negocio. La ratificación escrita de Marga/Paco (2026-07-07) aporta el testigo de negocio vivo que faltaba
+y **desbloquea** la anomalía: el comportamiento observable de hoy (importe 0,00 € sin aviso) queda como
+**BUG a corregir en modernización**, no como comportamiento a especificar tal cual.
 
-> **Propuesta SIMULADA a ratificar (acta 2026-07-07, D-03 — NO cierra la anomalía):** cuando "desde" es
-> posterior a "hasta" (error de tecleo), el sistema debería **avisar y no permitir grabar**, en vez de
-> facturar 0,00 € en silencio ([calculo.js:100](../../services/calculo.js#L100)); y un periodo de prorrateo
-> **no debería cruzar dos meses** (la función solo mira el día, [calculo.js:96-97](../../services/calculo.js#L96-L97)):
-> si hiciera falta cubrir dos meses, se emitirían dos líneas. **[SIMULADA — ratificar por Marga/Paco]**.
+> **Registro del cambio de clasificación (no sobrescrito):** hasta 2026-07-07 esta anomalía estuvo
+> **PENDIENTE** por falta de testigo de negocio vivo; su única respuesta era la propuesta SIMULADA D-03 del
+> consultor. **Ratificada por escrito por Marga/Paco el 2026-07-07** (el negocio confirma la propuesta del
+> consultor): cuando "desde" es posterior a "hasta" (error de tecleo), el sistema **avisa y no permite
+> grabar**, en vez de facturar 0,00 € en silencio ([calculo.js:100](../../services/calculo.js#L100)); y un
+> periodo de prorrateo **no cruza dos meses** (la función solo mira el día,
+> [calculo.js:96-97](../../services/calculo.js#L96-L97)): si hace falta cubrir dos meses, se emiten dos
+> líneas. Deja de estar PENDIENTE.
 
 **Dependientes.** Nadie identificado.
 
-**Tratamiento acordado.** **Documentar sin especificar** hasta ratificación; en modernización, decidir si
-se avisa y si se soporta rango intermensual. No retroactivo.
+**Tratamiento acordado.** **Especificar el comportamiento ACTUAL tal cual** (importe 0,00 € en silencio si
+"desde" > "hasta"; cálculo sin sentido si el periodo cruza meses) referenciado como bug por su ID; en
+modernización, **corregir** avisando/bloqueando y soportando el rango como dos líneas. **No retroactivo.**
 
-**Decisión de negocio pendiente (SIGUE ABIERTA).** Cuando "desde" es posterior a "hasta" (¿error de
-captura?), ¿cobrar 0 € en silencio o avisar? ¿Puede un periodo cruzar dos meses? **Responsable:** Marga /
-Paco. **Estado:** respuesta simulada por el consultor (D-03), **pendiente de ratificación**; permanece en
-la agenda de la próxima ronda.
+**Decisión de negocio: RESUELTA (ratificación escrita Marga/Paco, 2026-07-07).** Avisar y no permitir
+grabar cuando "desde" > "hasta"; un prorrateo no cruza dos meses (dos líneas si hiciera falta).
+**Responsable que la dio:** Marga (operativa de captura) con visto bueno de Paco. La corrección solo se
+aplica en modernización, con decisión escrita.
 
 ---
 
@@ -564,25 +572,30 @@ cadena (`'21'`) también obtendría recargo 0 aunque sea el 21.
 - **CÓDIGO:** `return 0` final de `recargoPara` ([services/calculo.js:22](../../services/calculo.js#L22)); comparaciones `=== 21`… ([calculo.js:13-21](../../services/calculo.js#L13-L21)).
 - **DATOS:** todos los artículos usan 21/10/4 ([db.js:105-112](../../db.js#L105-L112)); no hay tipo fuera de tabla en datos reales.
 
-**Clasificación final: PENDIENTE (con respuesta SIMULADA, no ratificada).** No hay señal de si el 0 es
-decisión (tratar lo desconocido como sin recargo) o fallback. Solo CÓDIGO a favor. **Sigue PENDIENTE:** en
-la reunión de 2026-07-07 el consultor respondió *en nombre del negocio* (D-04) pero **no es testimonio de
-negocio vivo válido** hasta ratificación escrita de Puri/Paco.
+**Clasificación final (revisada 2026-07-07): CERRADA — el comportamiento actual (recargo 0 en silencio ante IVA desconocido; `===` que rechaza `'21'`) es un BUG A SECAS; el negocio ratifica que un tipo no reconocido debe rechazarse.**
+Hasta la ratificación solo había CÓDIGO a favor y no había señal de si el 0 era decisión (tratar lo
+desconocido como sin recargo) o fallback. La ratificación escrita de Puri/Paco (2026-07-07) aporta el
+testigo de negocio vivo que faltaba y **desbloquea** la anomalía: el 0 silencioso queda como **BUG a
+corregir en modernización**, no como comportamiento a especificar tal cual.
 
-> **Propuesta SIMULADA a ratificar (acta 2026-07-07, D-04 — NO cierra la anomalía):** un tipo de IVA fuera
-> de la tabla (vigentes 21/10/4; antiguos conservados 18/16/8/7) debería **rechazarse**, no calcular recargo
-> 0 en silencio ([calculo.js:22](../../services/calculo.js#L22)); y corregir la comparación estricta que
-> rechaza `'21'` como cadena ([calculo.js:13-21](../../services/calculo.js#L13-L21)). **[SIMULADA — ratificar
-> por Puri/Paco]**.
+> **Registro del cambio de clasificación (no sobrescrito):** hasta 2026-07-07 esta anomalía estuvo
+> **PENDIENTE** con solo CÓDIGO a favor; su única respuesta era la propuesta SIMULADA D-04 del consultor.
+> **Ratificada por escrito por Puri/Paco el 2026-07-07** (el negocio confirma la propuesta del consultor): un
+> tipo de IVA fuera de la tabla (vigentes 21/10/4; antiguos conservados 18/16/8/7) **se rechaza**, no calcula
+> recargo 0 en silencio ([calculo.js:22](../../services/calculo.js#L22)); y se corrige la comparación
+> estricta que rechaza `'21'` como cadena ([calculo.js:13-21](../../services/calculo.js#L13-L21)). Deja de
+> estar PENDIENTE.
 
 **Dependientes.** Nadie identificado.
 
-**Tratamiento acordado.** **Documentar sin especificar** hasta ratificación; en modernización, decidir si un
-IVA no reconocido se rechaza en vez de calcular recargo 0. No retroactivo.
+**Tratamiento acordado.** **Especificar el comportamiento ACTUAL tal cual** (recargo 0 sin aviso para tipo
+fuera de tabla; `===` que trata `'21'` como desconocido) referenciado como bug por su ID; en modernización,
+**corregir** rechazando el tipo no reconocido y arreglando la comparación estricta. **No retroactivo.**
 
-**Decisión de negocio pendiente (SIGUE ABIERTA).** ¿Un tipo de IVA no reconocido debe rechazarse o calcular
-recargo 0? **Responsable:** Puri / Paco. **Estado:** respuesta simulada por el consultor (D-04), **pendiente
-de ratificación**; permanece en la agenda de la próxima ronda.
+**Decisión de negocio: RESUELTA (ratificación escrita Puri/Paco, 2026-07-07).** Un tipo de IVA no
+reconocido se rechaza (no calcula recargo 0 en silencio); corregir el `===`. **Responsable que la dio:**
+Puri (gestoría) con visto bueno de Paco. La corrección solo se aplica en modernización, con decisión
+escrita.
 
 ---
 
@@ -804,8 +817,8 @@ ejemplo se corregirán/anonimizarán en modernización (coordina con A-19), sin 
 | A-12 | Validación NIF solo por longitud | ACCIDENTAL c/control manual | Corregir si se pide | Sí — Marga/Paco |
 | A-13 | Grabado de factura ×3, orden no determinista | ACCIDENTAL | Documentar; unificar | Sí — Marga/Puri |
 | A-14 | Numeración por año del sistema, no de la factura | **CERRADA** (año de `factura.fecha`) | Corregir en modernización (no retro) | **Resuelta** — acta D-02 (Puri/fiscal) |
-| A-15 | Prorrateo negativo → 0 € en silencio; asume mismo mes | **PENDIENTE** (respuesta SIMULADA) | Documentar sin especificar | **Sigue abierta** — D-03 sin ratificar (Marga/Paco) |
-| A-16 | IVA desconocido → recargo 0 silencioso; `===` | **PENDIENTE** (respuesta SIMULADA) | Documentar sin especificar | **Sigue abierta** — D-04 sin ratificar (Puri/Paco) |
+| A-15 | Prorrateo negativo → 0 € en silencio; asume mismo mes | **CERRADA** (BUG A SECAS; avisar/bloquear, no cruzar meses) | Especificar tal cual; corregir en modernización (no retro) | **Resuelta** — ratificación escrita D-03 (Marga/Paco) |
+| A-16 | IVA desconocido → recargo 0 silencioso; `===` | **CERRADA** (BUG A SECAS; rechazar tipo no reconocido) | Especificar tal cual; corregir en modernización (no retro) | **Resuelta** — ratificación escrita D-04 (Puri/Paco) |
 | A-17 | `enviarFactura` no envía; envío manual real | BUG HISTÓRICO C/DEP. | Documentar; reactivar si se pide | Sí — Marga/Manoli |
 | A-18 | Secretos en claro en `config.js` versionado | BUG HISTÓRICO C/DEP. | Corregir sin renombrar config | Sí — Julián/Puri |
 | A-19 | BD de producción con datos personales en Git | BUG HISTÓRICO C/DEP. | Corregir (RGPD) | Sí — Paco/RGPD |
@@ -832,31 +845,29 @@ formales, con sus ≥2 testigos (CÓDIGO + NEGOCIO-doc, y DATOS donde aplica):
 
 # Clasificaciones PENDIENTES (agenda de la próxima conversación con el negocio)
 
-> Esta lista **debe quedar VACÍA antes de escribir las specs formales.** Mientras tenga entradas, es
-> exactamente el guion de la próxima entrevista. Cada una está bloqueada por falta de **testigo de
-> negocio vivo** y/o **veredicto de datos** (la arqueología aún no realizada).
+> **Estado a 2026-07-07: LISTA VACÍA.** No queda ninguna anomalía con clasificación PENDIENTE. El
+> reconocimiento está listo para pasar a specs formales.
 >
-> **Actualización tras el acta de 2026-07-07.** La reunión **cerró A-01 y A-14** (preguntas 1 y 2,
-> respondidas en firme por Paco/Puri y Puri/asesoría fiscal). **A-15 y A-16 siguen PENDIENTES**: en la
-> reunión el consultor respondió *en nombre del negocio* con el criterio más lógico (D-03, D-04), pero
-> esas respuestas están marcadas **[SIMULADA — ratificar]** y **no constituyen testimonio de negocio
-> vivo** hasta su confirmación por escrito. Por tanto **no salen de la agenda**: quedan como preguntas a
-> ratificar, con la propuesta del consultor ya sobre la mesa.
+> **Cómo se llegó aquí.** La reunión de 2026-07-07 cerró en firme **A-01 y A-14** (preguntas 1 y 2,
+> Paco/Puri y Puri/asesoría fiscal). Las dos anomalías que quedaban PENDIENTE por clasificación —**A-15 y
+> A-16**— se cerraron con la **ratificación escrita** de sus responsables el 2026-07-07 (D-03 por
+> Marga/Paco; D-04 por Puri/Paco), que aporta el testigo de negocio vivo que faltaba. Ambas quedan como
+> **BUG A SECAS** (comportamiento actual a especificar tal cual, corrección en modernización, no
+> retroactiva).
 
-| # | Anomalía | Pregunta exacta que la desbloquea | Responsable | Testigo que falta |
-|---|----------|-----------------------------------|-------------|-------------------|
-| ~~1~~ | ~~**A-01**~~ | **CERRADA** en acta 2026-07-07 (D-01): días reales del mes; el día 31 se cobra. Pendiente solo el dato de arqueología (nº de facturas de baja con fórmula A) para dimensionar, no para decidir. | — | — (resuelta) |
-| ~~2~~ | ~~**A-14**~~ | **CERRADA** en acta 2026-07-07 (D-02): manda el año de `factura.fecha`. Pendiente solo el dato de arqueología (facturas con año de número ≠ año de fecha). | — | — (resuelta) |
-| 1 | **A-15** | Cuando "desde" es posterior a "hasta" en un prorrateo, ¿cobrar 0 € en silencio o avisar? ¿Puede un periodo cruzar dos meses? | Marga + Paco | **Ratificación** de la respuesta SIMULADA D-03 (propuesta: avisar/no grabar; no cruzar meses) |
-| 2 | **A-16** | ¿Un tipo de IVA no reconocido debe rechazarse o calcular recargo 0 silenciosamente? | Puri + Paco | **Ratificación** de la respuesta SIMULADA D-04 (propuesta: rechazar; corregir `===` con `'21'`) |
+| # | Anomalía | Estado | Responsable | Testigo |
+|---|----------|--------|-------------|---------|
+| ~~1~~ | ~~**A-01**~~ | **CERRADA** (acta D-01): días reales del mes; el día 31 se cobra. | — | Negocio vivo (Paco/Puri) |
+| ~~2~~ | ~~**A-14**~~ | **CERRADA** (acta D-02): manda el año de `factura.fecha`. | — | Negocio vivo (Puri/fiscal) |
+| ~~3~~ | ~~**A-15**~~ | **CERRADA** (ratificación escrita D-03): avisar/no grabar si "desde" > "hasta"; no cruzar dos meses. | — | Negocio vivo (Marga/Paco) |
+| ~~4~~ | ~~**A-16**~~ | **CERRADA** (ratificación escrita D-04): rechazar IVA no reconocido; corregir `===`. | — | Negocio vivo (Puri/Paco) |
 
-**Además**, aunque su clasificación de bug ya está cerrada, estas anomalías **tienen decisión de
-negocio pendiente** que debe resolverse antes de especificar su tratamiento definitivo (no bloquean la
-clasificación, pero sí el "especificar tal cual" vs. "corregir"): A-02, A-04, A-05, A-06, A-08, A-09,
-A-10, A-11, A-12, A-13, A-17, A-18, A-19, A-20. **Tras el acta de 2026-07-07, todas ellas tienen una
-respuesta SIMULADA del consultor (D-05..D-18) pendiente de ratificación escrita** (ver el bloque
-correspondiente en cada anomalía y la tabla resumen). A-03 y A-07 son correcciones técnicas (D-19),
-sin decisión de negocio.
+**Nota sobre tratamiento (no bloquea la partición).** Todas las clasificaciones están cerradas. Estas
+anomalías conservan una **decisión de negocio sobre su tratamiento definitivo** que sigue como respuesta
+SIMULADA del consultor (D-05..D-18) pendiente de ratificación escrita en la ronda de modernización —afecta
+al matiz "especificar tal cual" vs. "corregir", no a la clasificación ni a la partición: A-02, A-04, A-05,
+A-06, A-08, A-09, A-10, A-11, A-12, A-13, A-17, A-18, A-19, A-20. A-03 y A-07 son correcciones técnicas
+(D-19), sin decisión de negocio.
 
 **Agenda de la próxima ronda con el negocio, en dos bloques:**
 1. **Ratificar por escrito** las respuestas [SIMULADA] con cada responsable (D-03..D-18). Solo entonces
@@ -871,8 +882,9 @@ sin decisión de negocio.
 *Consolidado en fase de reconocimiento a partir de las fuentes de `specs/000-reconocimiento/`.
 Toda afirmación se apoya en `fichero:líneas` del repositorio, en datos reales de `datos/gesfact.db` o
 en el testimonio del [acta de entrevista del 2026-07-07](./entrevista-negocio.md). Actualizado tras esa
-acta: **A-01 y A-14 quedan cerradas** con testimonio de negocio vivo firme (D-01, D-02); **A-15 y A-16
-siguen PENDIENTES** porque su respuesta en el acta es simulada por el consultor y está a ratificar; el
-resto de anomalías tiene una respuesta simulada (D-05..D-18) igualmente pendiente de ratificación. La
+acta y la ratificación escrita del mismo día: **A-01, A-14, A-15 y A-16 quedan cerradas** con testimonio
+de negocio vivo (D-01, D-02 en firme de reunión; D-03, D-04 ratificadas por escrito). La **lista de
+clasificaciones PENDIENTES queda VACÍA**. El resto de anomalías tiene una respuesta simulada (D-05..D-18)
+pendiente de ratificación **solo para su tratamiento definitivo**, no para su clasificación. La
 **arqueología de datos** sigue sin realizarse (dimensiona lo decidido, no lo decide). No se corrige nada
 (constitución del proyecto).*
