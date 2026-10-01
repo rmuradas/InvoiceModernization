@@ -11,18 +11,31 @@ Factura dinero real y la gestoría reconcilia sus resultados **céntimo a cénti
 
 ## Restricción que prevalece sobre todo: la constitución
 
-Antes de tocar nada, lee `.specify/memory/constitution.md`. Es vinculante y la fase actual
-del proyecto es **documentar y proteger, no mejorar**. En la práctica:
+Antes de tocar nada, lee `.specify/memory/constitution.md` (v2.0.0). Es vinculante. La fase de
+reconocimiento ("documentar y proteger, no mejorar") **ha terminado**; la fase actual del
+proyecto es **modernización por estrangulamiento**: se moderniza módulo a módulo, nunca más de
+uno a la vez, cada uno con su spec, su extracción y su verificación de equivalencia. En la
+práctica:
 
-- **El comportamiento observable actual es la especificación**, aunque parezca un bug.
-  Importes, redondeos, numeración, textos e informes NO se cambian sin decisión escrita del
-  negocio. Un bug encontrado **se registra como anomalía, no se corrige**.
-- **Cero dependencias nuevas y cero refactors**. No instalar paquetes, no renombrar/mover/
-  "limpiar" código de producción. Las únicas dependencias son `express`, `ejs`, `body-parser`,
-  `sqlite3`.
-- **Tests de caracterización solo con el runner nativo `node:test`** (sin frameworks externos).
-  Describen lo que el sistema **hace hoy**, no lo que debería hacer. Ningún test puede tocar el
-  estado de producción ni servicios externos vivos.
+- **El comportamiento observable actual sigue siendo la especificación por defecto.** Importes,
+  redondeos, numeración, textos e informes NO se cambian salvo que exista una **decisión de
+  negocio registrada por escrito** en `specs/000-reconocimiento/registro-de-anomalias.md` (quién
+  la tomó y cuándo). Sin esa decisión, un bug encontrado **se registra como anomalía, no se
+  corrige**; con ella, se corrige en el módulo correspondiente, nunca de forma retroactiva.
+- **Ningún cambio retroactivo jamás.** Las facturas ya emitidas y sus importes son intocables,
+  pase lo que pase con la lógica que las generó. Ni siquiera una decisión de negocio autoriza
+  reescribir una factura ya emitida.
+- **Los characterization tests son el árbitro.** Un test con el prefijo `CONGELA comportamiento
+  actual:` en rojo, sin decisión registrada que lo ampare, significa que la modernización ha roto
+  algo: se revierte el código, no se ajusta el test. Modificar uno de esos tests o regenerar el
+  golden master exige citar en el propio commit la decisión que lo autoriza.
+- **Dependencias nuevas permitidas con justificación.** Dejan de estar prohibidas, pero requieren
+  justificación escrita en la spec del módulo y aprobación explícita; se prefiere la biblioteca
+  estándar de Node cuando exista. Esto aplica al **módulo en extracción**; el resto del monolito
+  que aún no se ha estrangulado sigue sin tocarse.
+- **Tests de caracterización solo con el runner nativo `node:test`** (sin frameworks externos
+  para caracterizar comportamiento actual). Describen lo que el sistema **hace hoy**, no lo que
+  debería hacer. Ningún test puede tocar el estado de producción ni servicios externos vivos.
 - **Toda afirmación necesita evidencia**: cita `fichero:líneas`, un dato real de
   `datos/gesfact.db`, o testimonio del negocio con nombre y fecha. Lo no evidenciado se marca
   como **SUPOSICIÓN** y se convierte en pregunta al negocio.
@@ -98,16 +111,25 @@ comportamiento observable:
   **no se borran nunca**: un error se corrige con una rectificativa en serie `RE` que es espejo
   exacto (signos invertidos, sin recalcular) y se emite una nueva.
 
-### Anomalías conocidas (registrar, no corregir)
+### Anomalías conocidas (ver registro antes de tocar)
 
 Comentarios en el propio código señalan comportamientos frágiles ya conocidos, p. ej.: la reserva
 de número no es atómica (posibles números duplicados si dos usuarios graban a la vez,
 `lib/numeracion.js`), la validación de NIF solo comprueba longitud (`lib/util.js:validarNIF`), y
-`sumarDias` tuvo un desfase de un día no reproducido. Si encuentras más, van al registro de
-anomalías con evidencia; **no se arreglan en esta fase**.
+`sumarDias` tuvo un desfase de un día no reproducido. Todas están catalogadas en
+`specs/000-reconocimiento/registro-de-anomalias.md` (A-01 a A-22) con su clasificación y su
+tratamiento acordado. Si encuentras una nueva, se añade ahí con evidencia. **No se corrige
+ninguna sin la decisión de negocio registrada que exige esa misma anomalía** (algunas, como A-01,
+A-14, A-15 y A-16, ya tienen decisión resuelta por escrito; el resto sigue pendiente de
+ratificación).
 
 ## Estilo de código
 
-Imita el código existente: `var`, `function` clásicas, callbacks anidados con `if (err) return
-res.status(...)`, SQL en cadenas concatenadas, comentarios en español (a menudo firmados con
-nombre y fecha). No introduzcas ES6+, promesas, TypeScript ni utilidades nuevas.
+En el monolito aún no estrangulado, imita el código existente: `var`, `function` clásicas,
+callbacks anidados con `if (err) return res.status(...)`, SQL en cadenas concatenadas, comentarios
+en español (a menudo firmados con nombre y fecha). No introduzcas ES6+, promesas, TypeScript ni
+utilidades nuevas ahí sin que lo pida la spec del módulo en extracción.
+
+Dentro de un módulo que se está extrayendo por estrangulamiento (Principio IV de la
+constitución), el estilo y las dependencias los fija la spec de ese módulo, con justificación
+explícita para cualquier dependencia nueva (Principio V).
